@@ -39,6 +39,10 @@ TalonFX talBackLeft(1);
 TalonFX talBackRight(3);
 
 
+double my_map(double x, double in_min, double in_max, double out_min, double out_max){
+        double targetPos = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        return targetPos;
+}
 
 
 void initDrive()
@@ -284,9 +288,10 @@ void joint1Callback(const std_msgs::Float64& msg){
     /* Motion Magic */     
     /*4096 ticks/rev in either direction */
     /* input should be a value from -110 to 110 deg */
-    if (msg.data > -180 && msg.data < 110){
-        int offset1_deg = 50.2734375 + 180; //Cero at  center
-        double targetPos = (msg.data + offset1_deg) * 4096 / 360;
+    if (msg.data > -90 && msg.data < 90){
+        //int offset1_deg = 50.2734375 + 180; //Cero at  center
+        //double targetPos = (msg.data + offset1_deg) * 4096 / 360;
+	double targetPos = my_map(msg.data, -90, 90, 1535, 3583);
         srxArm1.Set(ControlMode::MotionMagic, targetPos);
         //srxArm1.Set(ControlMode::PercentOutput, targetPos);
 
@@ -310,9 +315,10 @@ void joint1Callback(const std_msgs::Float64& msg){
 void joint2Callback(const std_msgs::Float64& msg){
     ctre::phoenix::unmanaged::FeedEnable(30000);
     if (msg.data >= 0 && msg.data <= 161){
-        int offset2_deg = 33.3984375; //grados, cero horizontal
-        double targetPos = (msg.data + offset2_deg) * 4096 / 360;
-        srxArm2.Set(ControlMode::MotionMagic, targetPos);
+    //    int offset2_deg = 33.3984375; //grados, cero horizontal
+      //  double targetPos = (msg.data + offset2_deg) * 4096 / 360;
+        double targetPos = my_map(msg.data, 0, 161, 397, 2228.8);
+	    srxArm2.Set(ControlMode::MotionMagic, targetPos);
         //srxArm1.Set(ControlMode::PercentOutput, targetPos);
 
         /* Prepare line to print */
@@ -336,12 +342,12 @@ void joint3Callback(const std_msgs::Float64& msg){
 ctre::phoenix::unmanaged::FeedEnable(10000);
     if (msg.data >= -165.5 && msg.data <= 0){
         double x = msg.data;
-        int in_min = 0;
-        int in_max = -180;
-        int out_min = 3563;
-        int out_max = 1515;
-        double targetPos = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-
+        //int in_min = 0;
+        //int in_max = -180;
+        //int out_min = 3563;
+        //int out_max = 1515;
+        //double targetPos = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	double targetPos = my_map(msg.data,-165.5 , 0, 1689.265 , 3571);
         srxArm3.Set(ControlMode::MotionMagic, targetPos);
         //srxArm1.Set(ControlMode::PercentOutput, targetPos);
 
@@ -365,12 +371,12 @@ void joint4Callback(const std_msgs::Float64& msg){
     ctre::phoenix::unmanaged::FeedEnable(10000); 
      if (msg.data >= -135 && msg.data <= 90){
         double x = msg.data;
-        int in_min = -135;
-        int in_max = 90;
-        int out_min = 457;
-        int out_max = 3017;
-        double targetPos = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-
+        //int in_min = -135;
+        //int in_max = 90;
+        //int out_min = 457;
+        //int out_max = 3017;
+        //double targetPos = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        double targetPos =my_map(msg.data,-135,90,796,3356);
         srxArm4.Set(ControlMode::MotionMagic, targetPos);
         //srxArm4.Set(ControlMode::PercentOutput, targetPos);
 
@@ -429,7 +435,6 @@ void jointLabCallback(const std_msgs::Float64& msg){
         std::cout << "\tMust be a value from 0 to 90 degrees\n";
     }
 }
-
 
 int main(int argc, char **argv) {       
     /* Configuracion inicial*/

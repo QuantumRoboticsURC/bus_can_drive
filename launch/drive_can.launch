@@ -1,0 +1,3 @@
+<launch>
+  <node name="drive_can" pkg="bus_can_drive" type="drive_can" output="screen"/>
+</launch>
