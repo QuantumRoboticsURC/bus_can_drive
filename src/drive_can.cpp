@@ -288,7 +288,7 @@ void joint1Callback(const std_msgs::Float64& msg){
     /* Motion Magic */     
     /*4096 ticks/rev in either direction */
     /* input should be a value from -110 to 110 deg */
-    if (msg.data > -90 && msg.data < 90){
+    if (msg.data >= -90 && msg.data <= 90){
         //int offset1_deg = 50.2734375 + 180; //Cero at  center
         //double targetPos = (msg.data + offset1_deg) * 4096 / 360;
 	double targetPos = my_map(msg.data, -90, 90, 1535, 3583);
