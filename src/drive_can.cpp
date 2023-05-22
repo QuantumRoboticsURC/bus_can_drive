@@ -314,11 +314,11 @@ void joint1Callback(const std_msgs::Float64& msg){
 
 void joint2Callback(const std_msgs::Float64& msg){
     ctre::phoenix::unmanaged::FeedEnable(30000);
-    if (msg.data >= 0 && msg.data <= 161){
+    if (msg.data >= 10 && msg.data <= 161){
     //    int offset2_deg = 33.3984375; //grados, cero horizontal
       //  double targetPos = (msg.data + offset2_deg) * 4096 / 360;
-      // double targetPos = my_map(msg.data, 0, 161, 397, 2228.8);
-	double targetPos = my_map(msg.data,0,161, 1368, 3199);  
+      // double targetPos = my_map(msg.data, 10, 161, 510.77, 2228.8);
+	double targetPos = my_map(msg.data,10,161, 1481.77, 3199);  
  	 srxArm2.Set(ControlMode::MotionMagic, targetPos);
         //srxArm1.Set(ControlMode::PercentOutput, targetPos);
 
@@ -398,7 +398,7 @@ void joint4Callback(const std_msgs::Float64& msg){
     }
 }
 
-void joint5Callback(const std_msgs::Float64& msg){
+void centrifugeCallback(const std_msgs::Float64& msg){
     ctre::phoenix::unmanaged::FeedEnable(10000); 
     srxArm5.Set(ControlMode::PercentOutput, msg.data);
 }
@@ -453,7 +453,7 @@ int main(int argc, char **argv) {
     ros::Subscriber sub2 = nh.subscribe("arm_teleop/joint2",  1000, &joint2Callback);
     ros::Subscriber sub3 = nh.subscribe("arm_teleop/joint3",  1000, &joint3Callback);
     ros::Subscriber sub4 = nh.subscribe("arm_teleop/joint4",  1000, &joint4Callback);
-    ros::Subscriber sub5 = nh.subscribe("arm_teleop/gripper", 1000, &joint5Callback);
+    ros::Subscriber sub5 = nh.subscribe("centrifuge", 1000, &centrifugeCallback);
     ros::Subscriber sub6 = nh.subscribe("arm_teleop/prism",   1000, &joint6Callback);
     ros::Subscriber subLab = nh.subscribe("arm_teleop/joint2_lab",   1000, &jointLabCallback);
     
