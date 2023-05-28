@@ -134,7 +134,7 @@ srxArm1.ConfigMotionAcceleration(9, 10);
 /* Set acceleration and vcruise velocity - see documentation */
 srxArm2.Config_kF(0, 102.3, 10);
 srxArm2.Config_kP(0, 1.967307692, 10); 
-srxArm2.Config_kI(0, 0.001, 10);
+srxArm2.Config_kI(0, 0.005, 10);
 srxArm2.Config_kD(0, 19.67307692, 10);
 srxArm2.ConfigMotionCruiseVelocity(8, 10);
 srxArm2.ConfigMotionAcceleration(7.5, 10);
@@ -314,11 +314,11 @@ void joint1Callback(const std_msgs::Float64& msg){
 
 void joint2Callback(const std_msgs::Float64& msg){
     ctre::phoenix::unmanaged::FeedEnable(30000);
-    if (msg.data >= 10 && msg.data <= 161){
+    if (msg.data >= 20 && msg.data <= 161){
     //    int offset2_deg = 33.3984375; //grados, cero horizontal
       //  double targetPos = (msg.data + offset2_deg) * 4096 / 360;
       // double targetPos = my_map(msg.data, 10, 161, 510.77, 2228.8);
-	double targetPos = my_map(msg.data,10,161, 1481.77, 3199);  
+	double targetPos = my_map(msg.data,20,161, 1585.55, 3189.62);  
  	 srxArm2.Set(ControlMode::MotionMagic, targetPos);
         //srxArm1.Set(ControlMode::PercentOutput, targetPos);
 
@@ -411,12 +411,12 @@ void joint6Callback(const std_msgs::Float64& msg){
 
 void jointLabCallback(const std_msgs::Float64& msg){
     ctre::phoenix::unmanaged::FeedEnable(10000);  
-    if (msg.data >= -0 && msg.data <= 180){
+    if (msg.data >= -30 && msg.data <= 180){
         double x = msg.data;
-        int in_min = 0;
-        int in_max = 135;
-        int out_min = 1401;
-        int out_max = 2937;
+        int in_min = -30;
+        int in_max = 180;
+        int out_min = 1026;
+        int out_max = 3413;
         double targetPos = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
         srxArmLab.Set(ControlMode::MotionMagic, targetPos);
         //srxArmLab.Set(ControlMode::PercentOutput, msg.data);
